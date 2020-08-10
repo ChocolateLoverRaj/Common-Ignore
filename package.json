@@ -2,9 +2,9 @@
   "name": "common-ignore",
   "version": "1.0.0",
   "description": "A tool for generating .gitignore and .npmignore files with a common file for both ignores.",
-  "main": "index.js",
+  "main": "./index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "commonignore"
   },
   "bin": {
     "commonignore": "./index.js"
@@ -22,8 +22,8 @@
     "url": "https://github.com/ChocolateLoverRaj/Common-Ignore/issues"
   },
   "homepage": "https://github.com/ChocolateLoverRaj/Common-Ignore#readme",
-  "dependencies": {},
-  "devDependencies": {
-    "rollup": "^2.23.1"
-  }
+  "dependencies": {
+    "minimist": "^1.2.5"
+  },
+  "devDependencies": {}
 }
