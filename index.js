@@ -105,6 +105,7 @@ const generate = options => {
     };
 
     //Function that reads input file and writes to output file
+    //TODO handle files that extend other main files.
     const readMainFile = async fileName => {
         //The fileOptions object
         let file = files[fileName];
@@ -196,6 +197,7 @@ const requireConfig = configFile => {
     }
 }
 if (argv.c === true) {
+    //TODO make this more efficient, because this could always be slow if someone had a .js file, but we check every single time for a .json file first.
     try {
         requireConfig(path.join(baseDir, "./commonignore.config.json"));
     }
