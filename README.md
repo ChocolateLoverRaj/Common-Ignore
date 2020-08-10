@@ -1,2 +1,2 @@
 # Common-Ignore
-An extension for Vscode that helps generate .gitignore and .npmignore files.
+A tool for generating .gitignore and .npmignore files with a common file for both ignores.
