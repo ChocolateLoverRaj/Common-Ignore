@@ -1,5 +1,14 @@
 module.exports = {
     inputDir: "./commonignore",
     outputDir: "./",
-    files: {}
+    files: {
+        "git.txt": {
+            extends: ["common.txt"],
+            output: ".gitignore"
+        },
+        "npm.txt": {
+            extends: ["common.txt"],
+            output: ".npmignore"
+        }
+    }
 }
