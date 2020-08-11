@@ -1,3 +1,5 @@
+//The default config.
+
 module.exports = {
     inputDir: "./commonignore",
     outputDir: "./",
@@ -9,10 +11,6 @@ module.exports = {
         "npm.txt": {
             extends: ["common.txt"],
             output: ".npmignore"
-        },
-        "another.txt": {
-            extends: ["git.txt", "npm.txt"],
-            output: "another.ignore"
         }
     }
-}
+};

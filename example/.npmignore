@@ -1,12 +1,25 @@
 # Dependency Tree
 Line 08: npm.txt
-Line 11:       | --> common.txt
+Line 17:       | --> common.txt
 
 
 # Input Files
 
 # Input: 'npm.txt'
-Npm
+# Npm ignore only stuff
+examples/
+
+# Useful for things like examples and human readable images
+
+# Things that are useful on GitHub but not in Npm packages.
+contributing.md
 
 # Input: 'common.txt'
-Common
+# This is some common ignore stuff
+node_modules/
+
+# Some Vscode stuff
+.vscode/
+
+# Some secret stuff like API keys
+secrets/

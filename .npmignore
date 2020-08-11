@@ -6,3 +6,6 @@ node_modules/
 
 # Compiled CommonJS File
 commonjs/index.js
+
+# Example
+example/

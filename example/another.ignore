@@ -1,0 +1,41 @@
+# Dependency Tree
+Line 11: another.txt
+Line 20:           | --> git.txt
+Line 24:                       | --> common.txt
+Line 34:           | --> npm.txt
+Line 24:                       | --> common.txt
+
+
+# Input Files
+
+# Input: 'another.txt'
+# This is an example of more things besides .gitignore and .npmignore
+
+# Maybe you want to extend .npmignore and .gitignore.
+# That will also extend common.txt.
+more_stuff/
+unnecessary.txt
+*.html
+
+# Input: 'git.txt'
+# Git ignore only stuff
+# Idk What you'd put in here
+
+# Input: 'common.txt'
+# This is some common ignore stuff
+node_modules/
+
+# Some Vscode stuff
+.vscode/
+
+# Some secret stuff like API keys
+secrets/
+
+# Input: 'npm.txt'
+# Npm ignore only stuff
+examples/
+
+# Useful for things like examples and human readable images
+
+# Things that are useful on GitHub but not in Npm packages.
+contributing.md

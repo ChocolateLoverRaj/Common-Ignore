@@ -2,12 +2,19 @@
   "name": "common-ignore",
   "version": "1.0.0",
   "description": "A tool for generating .gitignore and .npmignore files with a common file for both ignores.",
-  "main": "./index.js",
+  "type": "module",
+  "main": "./commonjs/index.js",
+  "types": "./index.d.ts",
+  "exports": {
+    "import": "./index.js",
+    "require": "./commonjs/index.js"
+  },
   "scripts": {
-    "test": "commonignore"
+    "build": "rollup -c ./rollup.config.js",
+    "postinstall": "npm run build"
   },
   "bin": {
-    "commonignore": "./index.js"
+    "commonignore": "./commonjs/cli.js"
   },
   "repository": {
     "type": "git",
@@ -26,5 +33,7 @@
     "leadingzero": "^1.0.0",
     "minimist": "^1.2.5"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "rollup": "^2.23.1"
+  }
 }

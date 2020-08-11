@@ -1,20 +1,13 @@
-#!/usr/bin/env node
-
 //Dependencies
 //Npm Modules
-const minimist = require('minimist');
-const zeroPad = require('leadingzero');
+import zeroPad from 'leadingzero';
 
 //Node.js Modules
-const path = require('path');
-const fs = require('fs');
-const fsPromises = fs.promises;
-
-const argv = minimist(process.argv.slice(2));
-const baseDir = process.env.INIT_CWD || process.cwd();
+import { join } from 'path';
+import { promises as fsPromises } from 'fs';
 
 //Check options
-const checkOptions = options => {
+const checkOptions = (options) => {
     //Check fileOptions
     const checkFileOptions = fileOptions => {
         const checkStrArr = arr => {
@@ -58,7 +51,7 @@ const checkOptions = options => {
 };
 
 //Generate
-const generate = async options => {
+const generate = async (options, baseDir = process.env.INIT_CWD || process.cwd()) => {
     //Throw any TypeErrors if necessary.
     checkOptions(options);
 
@@ -66,10 +59,10 @@ const generate = async options => {
     let files = options.files;
 
     //Join inputDir based on baseDir.
-    let inputDir = path.join(baseDir, options.inputDir);
+    let inputDir = join(baseDir, options.inputDir);
 
     //Join the outputDir based on baseDir.
-    let outputDir = path.join(baseDir, options.outputDir);
+    let outputDir = join(baseDir, options.outputDir);
 
     //Save promises
     let savePromises = [];
@@ -79,10 +72,10 @@ const generate = async options => {
     let filesMap = new Map();
 
     //Join a file with inputDir
-    const joinInput = file => path.join(inputDir, file);
+    const joinInput = file => join(inputDir, file);
 
     //Join a file with outputDir
-    const joinOutput = file => path.join(outputDir, file);
+    const joinOutput = file => join(outputDir, file);
 
     //File class
     class File {
@@ -282,48 +275,5 @@ const generate = async options => {
     return;
 }
 
-const defaultConfig = {
-    inputDir: "./commonignore",
-    outputDir: "./",
-    files: {
-        "git.txt": {
-            extends: ["common.txt"],
-            output: ".gitignore"
-        },
-        "npm.txt": {
-            extends: ["common.txt"],
-            output: ".npmignore"
-        }
-    }
-};
-
-var config;
-
-const requireConfig = configFile => {
-    try {
-        config = require(configFile);
-    }
-    catch (e) {
-        if (e.code === 'MODULE_NOT_FOUND') {
-            throw new ReferenceError(`Couldn't require config file: ${configFile}`);
-        }
-    }
-}
-if (argv.c === true) {
-    //TODO make this more efficient, because this could always be slow if someone had a .js file, but we check every single time for a .json file first.
-    try {
-        requireConfig(path.join(baseDir, "./commonignore.config.json"));
-    }
-    catch (e) {
-        requireConfig(path.join(baseDir, "./commonignore.config.js"));
-    }
-}
-else if (typeof argv.c === 'string') {
-    requireConfig(path.join(baseDir, argv.c));
-}
-else {
-    config = defaultConfig;
-}
-generate(config).then(() => {
-    console.log("Successfully Generated All Files.");
-});
+//Export the generate function
+export default generate;

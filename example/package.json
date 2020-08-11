@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "commonignore -c"
+    "test": "commonignore -c ./commonignore.config.js"
   },
   "author": "",
   "license": "ISC",
