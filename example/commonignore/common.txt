@@ -1,0 +1,8 @@
+# This is some common ignore stuff
+node_modules/
+
+# Some Vscode stuff
+.vscode/
+
+# Some secret stuff like API keys
+secrets/

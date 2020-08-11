@@ -1,0 +1,7 @@
+# This is an example of more things besides .gitignore and .npmignore
+
+# Maybe you want to extend .npmignore and .gitignore.
+# That will also extend common.txt.
+more_stuff/
+unnecessary.txt
+*.html

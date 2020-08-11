@@ -1,0 +1,8 @@
+# Node Modules
+node_modules/
+
+# Vscode
+.vscode/
+
+# Compiled CommonJS File
+commonjs/index.js

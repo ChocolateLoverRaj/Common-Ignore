@@ -1,0 +1,7 @@
+# Npm ignore only stuff
+examples/
+
+# Useful for things like examples and human readable images
+
+# Things that are useful on GitHub but not in Npm packages.
+contributing.md

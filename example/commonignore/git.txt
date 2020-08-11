@@ -1,0 +1,2 @@
+# Git ignore only stuff
+# Idk What you'd put in here

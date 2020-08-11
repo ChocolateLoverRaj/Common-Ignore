@@ -1,0 +1,39 @@
+{
+  "name": "common-ignore",
+  "version": "1.0.0",
+  "description": "A tool for generating .gitignore and .npmignore files with a common file for both ignores.",
+  "type": "module",
+  "main": "./commonjs/index.js",
+  "types": "./index.d.ts",
+  "exports": {
+    "import": "./index.js",
+    "require": "./commonjs/index.js"
+  },
+  "scripts": {
+    "build": "rollup -c ./rollup.config.js",
+    "postinstall": "npm run build"
+  },
+  "bin": {
+    "commonignore": "./commonjs/cli.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChocolateLoverRaj/Common-Ignore.git"
+  },
+  "keywords": [
+    "common"
+  ],
+  "author": "Rajas Paranjpe",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ChocolateLoverRaj/Common-Ignore/issues"
+  },
+  "homepage": "https://github.com/ChocolateLoverRaj/Common-Ignore#readme",
+  "dependencies": {
+    "leadingzero": "^1.0.0",
+    "minimist": "^1.2.5"
+  },
+  "devDependencies": {
+    "rollup": "^2.23.1"
+  }
+}

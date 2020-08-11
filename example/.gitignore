@@ -1,0 +1,20 @@
+# Dependency Tree
+Line 08: git.txt
+Line 12:       | --> common.txt
+
+
+# Input Files
+
+# Input: 'git.txt'
+# Git ignore only stuff
+# Idk What you'd put in here
+
+# Input: 'common.txt'
+# This is some common ignore stuff
+node_modules/
+
+# Some Vscode stuff
+.vscode/
+
+# Some secret stuff like API keys
+secrets/
