@@ -1,7 +1,11 @@
 #!/usr/bin/env node
 
 //Dependencies
+//Npm Modules
 const minimist = require('minimist');
+const zeroPad = require('leadingzero');
+
+//Node.js Modules
 const path = require('path');
 const fs = require('fs');
 const fsPromises = fs.promises;
@@ -67,116 +71,189 @@ const generate = options => {
     //Join the outputDir based on baseDir.
     let outputDir = path.join(baseDir, options.outputDir);
 
-    //All the top level file promises
-    let mainFilePromises = [];
+    //Files Map
+    //Key: fileName: string, Value: file: File
+    let filesMap = new Map();
 
-    //Map of files that were read or are currently being read.
-    //Key: string
-    //Value: Promise
-    let readFilePromises = new Map();
+    //Join a file with inputDir
+    const joinInput = file => path.join(inputDir, file);
 
-    //Map of files that were read.
-    //Key: string
-    //Value: string
-    let readFiles = new Map();
+    //File class
+    class File {
+        constructor(fileName, isInput) {
+            //The name of the file
+            this.fileName = fileName;
 
-    //Function that reads a file or finds an already started or completed file read.
-    const readFile = async fileName => {
-        var readPromise;
-        if (readFiles.has(fileName)) {
-            console.log("already read");
+            //Whether or not this was a proved input
+            this.isInput = isInput;
 
-            readPromise = Promise.resolve(readFiles.get(fileName));
-        }
-        else if (readFilePromises.has(fileName)) {
-            console.log("already reading");
+            //The other files this depends on
+            this.dependencies = [];
 
-            readPromise = readFilePromises.get(fileName);
-        }
-        else {
-            console.log("we need to read");
+            //Save this file in the filesMap
+            filesMap.set(fileName, this);
 
-            readPromise = fsPromises.readFile(fileName, 'utf8');
-            readFilePromises.set(fileName, readPromise);
-        }
-        let fileText = await readPromise;
-        readFiles.set(fileName, fileText);
-        return fileText;
-    };
+            //The promise that will be fulfilled once it reads files and dependencies.
+            this.ready = (async () => {
+                //Read the text
+                let mainReadPromise = fsPromises.readFile(joinInput(fileName), 'utf8');
 
-    //Function that reads input file and writes to output file
-    //TODO handle files that extend other main files.
-    const readMainFile = async fileName => {
-        //The fileOptions object
-        let file = files[fileName];
+                //If this is an input, also create extends files
+                if (isInput) {
+                    //List of dependency promises
+                    let dependencyPromises = [];
 
-        //The promises that the current file depends on
-        let readPromises = [];
+                    //Loop through all the dependencies
+                    for (let dependencyFileName of files[fileName].extends) {
+                        //The File object to add.
+                        var dependencyFile;
 
-        //The files the current file depends on
-        let dependencyFiles = new Map();
+                        //Check if the dependency File was already created
+                        if (filesMap.has(dependencyFileName)) {
+                            //Get the existing File.
+                            dependencyFile = filesMap.get(dependencyFileName);
+                        }
+                        else {
+                            //Check if the file is a future input in the object.
+                            if (files.hasOwnProperty(dependencyFileName)) {
+                                //If it is, throw an error, because we don't reference future inputs because of circular dependencies.
+                                throw new ReferenceError("Cannot reference input file that comes after the main file. This is to avoid circular dependencies.");
+                            }
+                            else {
+                                //Create a new File.
+                                dependencyFile = new File(dependencyFileName, false);
+                            }
+                        }
 
-        //Loop through the dependencyFiles
-        for (let dependencyFile of file.extends) {
-            //The path joined with the inputDir.
-            let dependencyPath = path.join(inputDir, dependencyFile);
+                        //Add the dependency file and its ready promise
+                        this.dependencies.push(dependencyFile);
+                        dependencyPromises.push(dependencyFile.ready);
+                    }
 
-            //The promise that the readFile method returns.
-            let readPromise = readFile(dependencyPath)
-                .then(text => {
-                    dependencyFiles.set(dependencyFile, text);
+                    //Wait for all the dependency promises and the main promise
+                    await Promise.all([...dependencyPromises, mainReadPromise]);
+                }
+
+                //Wait for the main promise.
+                this.text = await mainReadPromise;
+
+                //Done with async promise.
+                return;
+            })()
+                .then(() => {
+                    //If this file was a provided input, then start generating the output file.
+                    if (isInput) {
+                        //Create a dependency tree.
+                        let dependencyTree = this.getDependencyTree();
+
+                        //Get all the files this depends on.
+                        let recursiveDependencyFiles = this.getDependencies();
+
+                        //The greatest line number.
+                        let greatestLineNumber;
+
+                        //Map withe the line number of all dependencies
+                        let lineMap = new Map();
+
+                        //Current line number
+                        let currentLineNumber =
+                            1 + //The initial line number
+                            1 + //The first line will be '# Dependency Tree\n'
+                            dependencyTree.length + //Each item takes up 1 line
+                            2 + //There will be 2 empty lines
+                            1; //There will be a line saying '# Input Files'
+
+                        //The text that this file will output
+                        let outputText = "# Input Files\n";
+
+                        //Loop through all dependencyFiles
+                        for (let dependencyFile of recursiveDependencyFiles) {
+                            //Add to lineMap
+                            lineMap.set(dependencyFile.fileName, currentLineNumber);
+
+                            //New greatest lineNumberSize
+                            greatestLineNumber = currentLineNumber;
+
+                            //Add a comment with the fileName
+                            outputText += `# Input: '${dependencyFile.fileName}'\n`;
+                            currentLineNumber++;
+
+                            //Add trimmed text
+                            outputText += `${dependencyFile.text.trim()}\n`;
+                            currentLineNumber += dependencyFile.text.split('\n').length;
+
+                            //Add an empty line
+                            outputText += "\n";
+                            currentLineNumber++;
+                        }
+
+                        //The greatest line number size
+                        let greatestLineNumberSize = greatestLineNumber.toString().length;
+
+                        //Dependency tree text
+                        let dependencyTreeText = "# Dependency Tree\n";
+
+                        //Loop through lines in dependency tree
+                        for (let dependencies of dependencyTree) {
+                            //The name of the file
+                            let fileName = dependencies[1];
+
+                            //Add the line number
+                            let lineNumber = zeroPad(lineMap.get(fileName), greatestLineNumberSize);
+                            dependencyTreeText += `Line ${lineNumber}: `;
+
+                            //Add the dependencies to the text
+                            dependencyTreeText += `${dependencies[0]}\n`;
+                        }
+
+                        //Add 2 empty lines to the text.
+                        dependencyTreeText += "\n\n";
+
+                        //Prepend the dependency tree to the output text
+                        outputText = dependencyTreeText + outputText;
+
+                        console.log(outputText)
+                    }
                 });
-
-            //Add the file to the readPromises
-            readPromises.push(readPromise);
         }
 
-        //Join the fileName with the inputDir.
-        let readFilePath = path.join(inputDir, fileName);
+        //Get a Set of dependency files, which is recursive.
+        //alreadyFiles is a Set of Files.
+        getDependencies(alreadyFiles = new Set()) {
+            //Add own fileName
+            alreadyFiles.add(this);
 
-        //The read promise of the main file.
-        let readFilePromise = readFile(readFilePath);
+            //Add all dependencyFiles
+            for (let dependencyFile of this.dependencies) {
+                dependencyFile.getDependencies(alreadyFiles);
+            }
 
-        //Add that read promise to readPromises too.
-        readPromises.push(readFilePromise);
-
-        //Wait for all the readPromises.
-        await Promise.all(readPromises);
-
-        //Get the resolved text of readFilePromise
-        //This is already waited for by readPromises
-        let readFileText = await readFilePromise;
-
-        //The output string
-        let outputStr = '';
-        //Loop through the dependencyFiles
-        for (let dependencyFile of file.extends) {
-            //Add a comment saying what it extends.
-            outputStr += `# Extends ${dependencyFile}\n`;
-
-            //Add the content of that file.
-            outputStr += `${dependencyFiles.get(dependencyFile)}\n`;
+            return alreadyFiles;
         }
 
-        //Add a comment with the main file name.
-        outputStr += `\n# From ${fileName}\n`;
+        //Get a dependency tree
+        getDependencyTree(lines = [], prefix = '') {
+            //The first line
+            let firstLine = prefix + this.fileName;
 
-        //Add the content of the main file.
-        outputStr += readFileText;
+            //Add this File
+            lines.push([firstLine, this.fileName]);
 
-        //The output path
-        let outputPath = path.join(outputDir, file.output);
+            //The new prefix
+            let newPrefix = " ".repeat(firstLine.length - 1) + "| --> ";
 
-        //Wait for the file to be done writing
-        await fsPromises.writeFile(outputPath, outputStr, 'utf8');
+            //Go through all dependencies
+            for (let dependencyFile of this.dependencies) {
+                dependencyFile.getDependencyTree(lines, newPrefix);
+            }
 
-        //Return the outputStr
-        return outputStr;
-    };
+            return lines;
+        }
+    }
 
     //Go through all the files
     for (let fileName in files) {
-        mainFilePromises.push(readMainFile(fileName));
+        new File(fileName, true);
     };
 }
 

@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/ChocolateLoverRaj/Common-Ignore#readme",
   "dependencies": {
+    "leadingzero": "^1.0.0",
     "minimist": "^1.2.5"
   },
   "devDependencies": {}

@@ -9,6 +9,10 @@ module.exports = {
         "npm.txt": {
             extends: ["common.txt"],
             output: ".npmignore"
+        },
+        "more.txt": {
+            extends: ["npm.txt", "git.txt"],
+            output: "more.ignore"
         }
     }
 }
