@@ -1,5 +1,12 @@
-# Extends common.txt
-Common
+# Dependency Tree
+Line 08: git.txt
+Line 11:       | --> common.txt
 
-# From git.txt
+
+# Input Files
+
+# Input: 'git.txt'
 Git
+
+# Input: 'common.txt'
+Common

@@ -1,5 +1,12 @@
-# Extends common.txt
-Common
+# Dependency Tree
+Line 08: npm.txt
+Line 11:       | --> common.txt
 
-# From npm.txt
+
+# Input Files
+
+# Input: 'npm.txt'
 Npm
+
+# Input: 'common.txt'
+Common
