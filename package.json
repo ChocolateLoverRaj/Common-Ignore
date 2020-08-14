@@ -31,9 +31,7 @@
   "homepage": "https://github.com/ChocolateLoverRaj/Common-Ignore#readme",
   "dependencies": {
     "leadingzero": "^1.1.0",
-    "minimist": "^1.2.5"
-  },
-  "devDependencies": {
+    "minimist": "^1.2.5",
     "rollup": "^2.23.1"
   }
 }
