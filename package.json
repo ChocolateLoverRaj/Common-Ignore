@@ -1,6 +1,6 @@
 {
   "name": "common-ignore",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A tool for generating .gitignore and .npmignore files with a common file for both ignores.",
   "type": "module",
   "main": "./commonjs/index.js",
@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/ChocolateLoverRaj/Common-Ignore#readme",
   "dependencies": {
-    "leadingzero": "^1.0.0",
+    "leadingzero": "^1.1.0",
     "minimist": "^1.2.5"
   },
   "devDependencies": {
