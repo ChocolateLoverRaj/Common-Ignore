@@ -5,8 +5,14 @@
 .github/
 
 # Testing
-*.test.js
+tests/
 __snapshots__
 
 # Common-Ignore
 common-ignore/
+
+# Example
+example/
+
+# Building
+build/

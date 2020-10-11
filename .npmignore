@@ -1,6 +1,6 @@
 # Dependency Tree
 Line 08: npm.npmignore
-Line 22:             | --> git.gitignore
+Line 28:             | --> git.gitignore
 
 
 # Input Files
@@ -13,11 +13,17 @@ Line 22:             | --> git.gitignore
 .github/
 
 # Testing
-*.test.js
+tests/
 __snapshots__
 
 # Common-Ignore
 common-ignore/
+
+# Example
+example/
+
+# Building
+build/
 
 # Input: 'git.gitignore'
 # Node Modules
