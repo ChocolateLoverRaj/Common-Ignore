@@ -1,6 +1,6 @@
 {
   "name": "common-ignore",
-  "version": "2.0.0-1",
+  "version": "2.0.0-2",
   "description": "A tool for generating .gitignore and .npmignore files with a common file for both ignores.",
   "type": "module",
   "main": "unsupported.js",
