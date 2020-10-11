@@ -1,6 +1,6 @@
 # Dependency Tree
 Line 08: npm.npmignore
-Line 28:             | --> git.gitignore
+Line 31:             | --> git.gitignore
 
 
 # Input Files
@@ -24,6 +24,9 @@ example/
 
 # Building
 build/
+
+# Node version
+.node-version
 
 # Input: 'git.gitignore'
 # Node Modules

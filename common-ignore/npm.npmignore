@@ -16,3 +16,6 @@ example/
 
 # Building
 build/
+
+# Node version
+.node-version
