@@ -3,18 +3,21 @@
   "version": "1.1.1",
   "description": "A tool for generating .gitignore and .npmignore files with a common file for both ignores.",
   "type": "module",
-  "main": "./commonjs/index.js",
+  "main": "unsupported.js",
   "types": "./index.d.ts",
   "exports": {
     "import": "./index.js",
-    "require": "./commonjs/index.js"
+    "require": "./unsupported.cjs"
   },
   "scripts": {
-    "build": "rollup -c ./rollup.config.js",
-    "postinstall": "npm run build"
-  },
-  "bin": {
-    "commonignore": "./commonjs/cli.js"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:ci": "node --experimental-vm-modules node_modules/jest/bin/jest.js --ci",
+    "test:update": "node --experimental-vm-modules node_modules/jest/bin/jest.js -u",
+    "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
+    "test:actions": "npm run test:ci && npm run lint",
+    "lint": "standard",
+    "lint:fix": "standard --fix",
+    "common-ignore": "node build/index"
   },
   "repository": {
     "type": "git",
@@ -30,8 +33,13 @@
   },
   "homepage": "https://github.com/ChocolateLoverRaj/Common-Ignore#readme",
   "dependencies": {
-    "leadingzero": "^1.1.0",
-    "minimist": "^1.2.5",
-    "rollup": "^2.23.1"
-  }
+    "leadingzero": "^1.1.2"
+  },
+  "devDependencies": {
+    "dirname-filename-esm": "^1.0.1",
+    "jest": "^26.5.2",
+    "pre-commit": "^1.2.2",
+    "standard": "^14.3.4"
+  },
+  "pre-commit": "common-ignore"
 }

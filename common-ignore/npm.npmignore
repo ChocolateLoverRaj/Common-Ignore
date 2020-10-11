@@ -1,0 +1,12 @@
+# Vscode
+.vscode/
+
+# GitHub
+.github/
+
+# Testing
+*.test.js
+__snapshots__
+
+# Common-Ignore
+common-ignore/

@@ -1,0 +1,9 @@
+{
+    "cSpell.words": [
+        "leadingzero",
+        "npmignore"
+    ],
+    "editor.tabSize": 2,
+    "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
+    "javascript.format.insertSpaceAfterConstructor": true
+}
