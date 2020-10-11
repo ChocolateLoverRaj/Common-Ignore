@@ -1,0 +1,27 @@
+# Dependency Tree
+Line 08: npm.npmignore
+Line 22:             | --> git.gitignore
+
+
+# Input Files
+
+# Input: 'npm.npmignore'
+# Vscode
+.vscode/
+
+# GitHub
+.github/
+
+# Testing
+*.test.js
+__snapshots__
+
+# Common-Ignore
+common-ignore/
+
+# Input: 'git.gitignore'
+# Node Modules
+node_modules/
+
+# Test Output
+tests/output/

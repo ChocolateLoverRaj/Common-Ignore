@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`simple setup 1`] = `
+"# Dependency Tree
+Line 7: git.gitignore
+
+
+# Input Files
+
+# Input: 'git.gitignore'
+# Node Modules
+node_modules/
+"
+`;
+
+exports[`simple setup 2`] = `
+"# Dependency Tree
+Line 08: npm.npmignore
+Line 12:             | --> git.gitignore
+
+
+# Input Files
+
+# Input: 'npm.npmignore'
+# Examples
+examples/
+
+# Input: 'git.gitignore'
+# Node Modules
+node_modules/
+"
+`;
