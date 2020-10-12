@@ -12,15 +12,7 @@ By default npm uses `.gitignore`. If there is also a `.npmignore` file, then npm
 ### Accidentally publishing secret files
 The `.npmignore` file can be useful, especially for repositories with other files that the npm package doesn't need. However, you need to remember to also include things that would be in `.gitignore`, which usually include secrets. It can be annoying to copy and paste things from `.gitignore` to `.npmignore`, and it can be easy to forget. For example, you could add something to `.gitignore`, but then forgot to also add it to `.npmignore`.
 
-### What Common-Ignore does
-
-Common-Ignore is a CLI that automatically generates `.gitignore` and `.npmignore` files based one three files. One with common things to ignore, and one for git only and one for npm only.
-
 ## Using
-
-### The two different methods
-- [Using the CLI](#CLI)
-- [Using Node.js Module](#Node.js-Module)
 
 ### Config
 There are three properties in a config object
@@ -55,36 +47,12 @@ Here is an example which has two inputs. `git.txt` and `npm.txt`. Both of them e
 }
 ```
 
-### CLI
-It is very easy using the CLI. In a npm script, you can use the `commonignore` command to generate the files. To specify input and output files, use the `-c` flag. `commonignore -c {path_to_options_file}`. You can use `.js` files or `.json` files. If you use `.js` files, then you have to use CommonJS files that export the [options](#Config).
-
-File Structure Example
-
-To keep things organized, you can create a folder called `commonignore`, which contains the input files. Here is an example below:
-
-- package.json
-- commonignore.config.js
-- commonignore
-    - git.txt
-    - npm.txt
-    - common.txt
-- .gitignore (this will be generated)
-- .npmignore (this will be generated)
-
-Remember to specify inputs, outputs, and what inputs extend what other files or inputs in the [config file](#Config).
-
 ### Node.js Module
-You can also programmatically use Common-Ignore.
-
-ESModules
 ```javascript
 import commonIgnore from 'common-ignore'
 ```
-CommonJS
-```javascript
-const commonIgnore = require('common-ignore')
-```
-The commonIgnore function takes two parameters. The first one is the [options / config](#Config). The second parameter is optional, and it is the base directory. Usually the base directory is the root folder of your project. It returns a promise, which resolved `undefined` once done.
+
+The commonIgnore function takes two parameters. The first one is the [options / config](#Config). The second parameter is optional, and it is the base directory. Usually the base directory is the root folder of your project. It returns a promise, which resolves `undefined` once done.
 
 Example
 
@@ -97,17 +65,3 @@ commonIgnore(myOptions, __dirname)
         console.log("Error");
     })
 ```
-
-## Npm Build Script
-You can easily use Common-Ignore in a build script. This way you can also use the [`commonignore`](#Cli) command without installing it globally.
-
-### Example `scripts` in `package.json`
-```json
-{
-    "scripts": {
-        "build": "commonignore -c myConfig.json"
-    }
-}
-```
-
-Then you can do `npm run build` and then it will generate your output files.
