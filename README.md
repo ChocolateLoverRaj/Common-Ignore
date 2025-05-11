@@ -1,3 +1,6 @@
+> [!WARNING]  
+> I no longer maintain this. I think it will still work. But don't bother using it. Just manually copy things from `.gitignore` into `.npmignore`. Trust. Looking back, this only improved my programming skills / experience and it's actually not worth it at all in terms of the utility it provides.
+
 # Common-Ignore
 A tool for generating .gitignore and .npmignore files with a common file for both ignores.
 
